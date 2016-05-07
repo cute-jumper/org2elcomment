@@ -93,15 +93,17 @@
          (output (org-export-as org2el-backend))
          beg)
     (if bounds
-        (with-current-buffer src-buf
-          (kill-region (car bounds) (cdr bounds))
-          (save-excursion
-            (goto-char (car bounds))
-            (insert "\n")
-            (setq beg (point))
-            (insert output)
-            (comment-region beg (point))
-            (insert "\n")))
+        (progn
+          (with-current-buffer src-buf
+            (kill-region (car bounds) (cdr bounds))
+            (save-excursion
+              (goto-char (car bounds))
+              (insert "\n")
+              (setq beg (point))
+              (insert output)
+              (comment-region beg (point))
+              (insert "\n")))
+          (switch-to-buffer src-buf))
       (error "No \";;; Commentary:\" or \";;; Code:\" found"))))
 
 (provide 'org2el)
