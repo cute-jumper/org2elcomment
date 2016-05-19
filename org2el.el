@@ -73,6 +73,8 @@
 
 ;;; Code:
 
+(require 'pulse)
+
 (defvar org2el-backend 'ascii)
 
 (defun org2el--find-bounds (buffer)
@@ -91,7 +93,7 @@
   (let* ((src-buf (find-file-noselect file-name))
          (bounds (org2el--find-bounds src-buf))
          (output (org-export-as org2el-backend))
-         beg)
+         beg end)
     (if bounds
         (progn
           (with-current-buffer src-buf
@@ -102,8 +104,13 @@
               (setq beg (point))
               (insert output)
               (comment-region beg (point))
-              (insert "\n")))
-          (switch-to-buffer src-buf))
+              (insert "\n")
+              (setq end (point))))
+          (switch-to-buffer src-buf)
+          (push-mark)
+          (goto-char (car bounds))
+          (recenter 0)
+          (pulse-momentary-highlight-region (car bounds) end))
       (error "No \";;; Commentary:\" or \";;; Code:\" found"))))
 
 (provide 'org2el)
