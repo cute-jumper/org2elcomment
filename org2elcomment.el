@@ -1,4 +1,4 @@
-;;; org2el.el --- Convert Org file to Elisp comments  -*- lexical-binding: t; -*-
+;;; org2elcomment.el --- Convert Org file to Elisp comments  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2016  Junpeng Qiu
 
@@ -22,7 +22,7 @@
 
 ;;                              _____________
 
-;;                                  ORG2EL
+;;                                  ORG2ELCOMMENT
 
 ;;                               Junpeng Qiu
 ;;                              _____________
@@ -43,7 +43,7 @@
 ;; ==========
 
 ;;   This simple package is mainly used for Elisp package writers. After
-;;   you've written the `README.org' for your package, you can use `org2el'
+;;   you've written the `README.org' for your package, you can use `org2elcomment'
 ;;   to convert the org file to Elisp comments in the corresponding source
 ;;   code file.
 
@@ -56,7 +56,7 @@
 ;;   you use `auto-insert', it will take care of generating a standard file
 ;;   header that contains these two lines in your source code.
 
-;;   In your Org file, invoke `org2el', select the source code file, and
+;;   In your Org file, invoke `org2elcomment', select the source code file, and
 ;;   done! Now take a look at your source code file, you can see your Org
 ;;   file has been converted to the comments in your source code file.
 
@@ -68,16 +68,16 @@
 ;;   default backend is `ascii'. You can change to whatever backend that
 ;;   your org-mode export engine supports, such as `md' (for markdown):
 ;;   ,----
-;;   | (setq org2el-backend 'md)
+;;   | (setq org2elcomment-backend 'md)
 ;;   `----
 
 ;;; Code:
 
 (require 'pulse)
 
-(defvar org2el-backend 'ascii)
+(defvar org2elcomment-backend 'ascii)
 
-(defun org2el--find-bounds (buffer)
+(defun org2elcomment--find-bounds (buffer)
   (let (beg end)
     (with-current-buffer buffer
       (save-excursion
@@ -88,11 +88,11 @@
             (setq end (line-beginning-position))
             (cons beg end)))))))
 
-(defun org2el (file-name)
+(defun org2elcomment (file-name)
   (interactive "fSource file: ")
   (let* ((src-buf (find-file-noselect file-name))
-         (bounds (org2el--find-bounds src-buf))
-         (output (org-export-as org2el-backend))
+         (bounds (org2elcomment--find-bounds src-buf))
+         (output (org-export-as org2elcomment-backend))
          beg end)
     (if bounds
         (progn
@@ -113,5 +113,5 @@
           (pulse-momentary-highlight-region (car bounds) end))
       (error "No \";;; Commentary:\" or \";;; Code:\" found"))))
 
-(provide 'org2el)
-;;; org2el.el ends here
+(provide 'org2elcomment)
+;;; org2elcomment.el ends here
