@@ -3,6 +3,7 @@
 ;; Copyright (C) 2016  Junpeng Qiu
 
 ;; Author: Junpeng Qiu <qjpchmail@gmail.com>
+;; Package-Requires: ((org "8.3.4"))
 ;; Keywords: extensions
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -73,6 +74,7 @@
 
 ;;; Code:
 
+(require 'org)
 (require 'pulse)
 
 (defvar org2elcomment-backend 'ascii)
