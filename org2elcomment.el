@@ -90,6 +90,7 @@
             (setq end (line-beginning-position))
             (cons beg end)))))))
 
+;;;###autoload
 (defun org2elcomment (file-name)
   (interactive "fSource file: ")
   (let* ((src-buf (find-file-noselect file-name))
