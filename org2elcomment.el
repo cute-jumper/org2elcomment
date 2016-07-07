@@ -75,7 +75,7 @@
 ;;; Code:
 
 (require 'org)
-(require 'pulse)
+(require 'pulse nil t)
 
 (defvar org2elcomment-backend 'ascii)
 
@@ -113,7 +113,8 @@
           (push-mark)
           (goto-char (car bounds))
           (recenter 0)
-          (pulse-momentary-highlight-region (car bounds) end))
+          (when (featurep 'pulse)
+            (pulse-momentary-highlight-region (car bounds) end)))
       (error "No \";;; Commentary:\" or \";;; Code:\" found"))))
 
 (provide 'org2elcomment)
