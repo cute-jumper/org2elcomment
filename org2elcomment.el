@@ -79,6 +79,10 @@
 
 (defvar org2elcomment-backend 'ascii)
 
+(defvar org2elcomment-last-source nil)
+
+(make-variable-buffer-local 'org2elcomment-last-source)
+
 (defun org2elcomment--find-bounds (buffer)
   (let (beg end)
     (with-current-buffer buffer
@@ -92,7 +96,17 @@
 
 ;;;###autoload
 (defun org2elcomment (file-name)
-  (interactive "fSource file: ")
+  (interactive
+   (list
+    (let ((prompt
+           (if org2elcomment-last-source
+               (format "Source file (default \"%s\"): "
+                       org2elcomment-last-source)
+             "Source file: ")))
+      (setq org2elcomment-last-source (read-file-name prompt
+                                                      nil
+                                                      org2elcomment-last-source
+                                                      t)))))
   (let* ((src-buf (find-file-noselect file-name))
          (bounds (org2elcomment--find-bounds src-buf))
          (output (org-export-as org2elcomment-backend))
