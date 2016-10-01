@@ -92,7 +92,9 @@
           (setq beg (line-beginning-position 2))
           (when (re-search-forward "^;;; Code:$")
             (setq end (line-beginning-position))
-            (cons beg end)))))))
+            (if (and beg end)
+                (cons beg end)
+              (error "No \";;; Commentary:\" or \";;; Code:\" found"))))))))
 
 ;;;###autoload
 (defun org2elcomment (file-name)
@@ -128,8 +130,7 @@
           (goto-char (car bounds))
           (recenter 0)
           (when (featurep 'pulse)
-            (pulse-momentary-highlight-region (car bounds) end)))
-      (error "No \";;; Commentary:\" or \";;; Code:\" found"))))
+            (pulse-momentary-highlight-region (car bounds) end))))))
 
 (provide 'org2elcomment)
 ;;; org2elcomment.el ends here
