@@ -110,26 +110,25 @@
                                                       t)))))
   (let* ((src-buf (find-file-noselect file-name))
          (bounds (org2elcomment--find-bounds src-buf))
-         (output (org-export-as org2elcomment-backend))
-         beg end)
-    (if bounds
-        (progn
-          (with-current-buffer src-buf
-            (kill-region (car bounds) (cdr bounds))
-            (save-excursion
-              (goto-char (car bounds))
-              (insert "\n")
-              (setq beg (point))
-              (insert output)
-              (comment-region beg (point))
-              (insert "\n")
-              (setq end (point))))
-          (switch-to-buffer src-buf)
-          (push-mark)
+         output beg end)
+    (when bounds
+      (setq output (org-export-as org2elcomment-backend))
+      (with-current-buffer src-buf
+        (kill-region (car bounds) (cdr bounds))
+        (save-excursion
           (goto-char (car bounds))
-          (recenter 0)
-          (when (featurep 'pulse)
-            (pulse-momentary-highlight-region (car bounds) end))))))
+          (insert "\n")
+          (setq beg (point))
+          (insert output)
+          (comment-region beg (point))
+          (insert "\n")
+          (setq end (point))))
+      (switch-to-buffer src-buf)
+      (push-mark)
+      (goto-char (car bounds))
+      (recenter 0)
+      (when (featurep 'pulse)
+        (pulse-momentary-highlight-region (car bounds) end)))))
 
 (provide 'org2elcomment)
 ;;; org2elcomment.el ends here
