@@ -87,9 +87,9 @@
     (with-current-buffer buffer
       (save-excursion
         (goto-char (point-min))
-        (when (re-search-forward "^;;; Commentary:$" nil t)
+        (when (re-search-forward "^;;;[[:blank:]]+Commentary:[[:blank:]]*$" nil t)
           (setq beg (line-beginning-position 2))
-          (when (re-search-forward "^;;; Code:$")
+          (when (re-search-forward "^;;;[[:blank:]]+Code:[[:blank:]]*$")
             (setq end (line-beginning-position))
             (if (and beg end)
                 (cons beg end)
