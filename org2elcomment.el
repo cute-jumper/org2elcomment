@@ -77,8 +77,10 @@
 (require 'org)
 (require 'pulse nil t)
 
-(defvar org2elcomment-backend 'ascii)
-(defvar org2elcomment-exporter 'org2elcomment-default-exporter)
+(defvar org2elcomment-backend 'ascii
+  "Org export backend used by the default exporter of `org2elcomment'.")
+(defvar org2elcomment-exporter 'org2elcomment-default-exporter
+  "Export function used by `org2elcomment'.")
 
 (defvar org2elcomment-last-source nil)
 (make-variable-buffer-local 'org2elcomment-last-source)
@@ -210,11 +212,15 @@ directory EL-FILE-DIR."
 
 ;;;###autoload
 (defun org2elcomment-anywhere (el-file &optional org-file)
+  "Convert ORG-FILE to the commentary section in EL-FILE.
+This command can be invoked anywhere inside Emacs."
   (org2elcomment--interactive-form org2elcomment-anywhere-last-source)
   (org2elcomment--update-comment el-file org-file #'org2elcomment--pre-handler))
 
 ;;;###autoload
 (defun org2elcomment (el-file)
+  "Conver the current org file to the commentary section in EL-FILE.
+This command must be invoked when the current buffer is in `org-mode'."
   (org2elcomment--interactive-form org2elcomment-last-source)
   (org2elcomment--update-comment el-file (buffer-file-name) nil #'org2elcomment--post-handler))
 
