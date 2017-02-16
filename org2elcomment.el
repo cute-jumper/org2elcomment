@@ -159,9 +159,8 @@
     (format "%s: " initial)))
 
 (defmacro org2elcomment--interactive-form (name)
-  `(interactive
-    (list (let ((prompt (org2elcomment--get-prompt "Elisp file" ,name)))
-            (setq ,name (read-file-name prompt nil ,name t))))))
+  `(list (let ((prompt (org2elcomment--get-prompt "Elisp file" ,name)))
+           (setq ,name (read-file-name prompt nil ,name t)))))
 
 (defun org2elcomment-default-exporter (org-file)
   (with-temp-buffer
@@ -264,14 +263,14 @@ directory EL-FILE-DIR."
 (defun org2elcomment-anywhere (el-file &optional org-file)
   "Convert ORG-FILE to the commentary section in EL-FILE.
 This command can be invoked anywhere inside Emacs."
-  (org2elcomment--interactive-form org2elcomment-anywhere-last-source)
+  (interactive (org2elcomment--interactive-form org2elcomment-anywhere-last-source))
   (org2elcomment--update-comment el-file org-file #'org2elcomment--pre-handler))
 
 ;;;###autoload
 (defun org2elcomment (el-file)
   "Conver the current org file to the commentary section in EL-FILE.
 This command must be invoked when the current buffer is in `org-mode'."
-  (org2elcomment--interactive-form org2elcomment-last-source)
+  (interactive (org2elcomment--interactive-form org2elcomment-last-source))
   (org2elcomment--update-comment el-file (buffer-file-name) nil #'org2elcomment--post-handler))
 
 (provide 'org2elcomment)
