@@ -165,6 +165,9 @@
 (defun org2elcomment-default-exporter (org-file)
   (with-temp-buffer
     (insert-file-contents org-file)
+    (goto-char (point-min))
+    (while (search-forward ". " nil t)
+      (replace-match ".  "))
     (org-export-as org2elcomment-backend)))
 
 (defun org2elcomment--save-org-to-el (buffer value)
