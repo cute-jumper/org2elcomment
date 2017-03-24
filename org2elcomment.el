@@ -168,7 +168,8 @@
     (goto-char (point-min))
     (while (search-forward ". " nil t)
       (replace-match ".  "))
-    (org-export-as org2elcomment-backend)))
+    (let ((sentence-end-double-space t))
+      (org-export-as org2elcomment-backend))))
 
 (defun org2elcomment--save-org-to-el (buffer value)
   "Set current file's local variable `org2elcomment-anywhere-org-file'."
